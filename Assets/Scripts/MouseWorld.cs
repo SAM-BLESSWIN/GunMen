@@ -6,17 +6,17 @@ public class MouseWorld : MonoBehaviour
 {
     [SerializeField] private LayerMask mouseLayerMask;
 
-    public static MouseWorld Instance;
+    public static MouseWorld instance;
 
     private void Awake()
     {
-        Instance = this;
+        instance = this;
     }
 
     public static Vector3 GetMouseWorldPosition()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, Instance.mouseLayerMask);
+        Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, instance.mouseLayerMask);
         return hit.point;
     }
 }

@@ -7,6 +7,11 @@ public class Unit : MonoBehaviour
     [SerializeField] private Animator unitAnimator;
     private Vector3 targetPosition;
 
+    private void Start()
+    {
+        targetPosition = transform.position;    
+    }
+
     private void Update()
     {
         float stoppingDistance = 0.1f;
@@ -25,11 +30,6 @@ public class Unit : MonoBehaviour
         else
         {
             unitAnimator.SetBool("IsWalking",false);
-        }
-
-        if(Input.GetMouseButtonDown(0))
-        {
-            Move(MouseWorld.GetMouseWorldPosition());
         }
     }
 
