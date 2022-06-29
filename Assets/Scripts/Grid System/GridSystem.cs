@@ -9,6 +9,9 @@ public class GridSystem
     private float cellsize;
     private GridObject[,] gridObjectArray;
 
+    public int Width { get => width;}
+    public int Height { get => height; }
+
     public GridSystem(int width,int height,float cellsize)
     {
         this.width = width;
@@ -53,6 +56,11 @@ public class GridSystem
     public GridObject GetGridObject(GridPosition gridPosition)
     {
         return gridObjectArray[gridPosition.x, gridPosition.z];
+    }
+
+    public bool IsValidGridPosition(GridPosition gridPosition)
+    {
+        return gridPosition.x >= 0 && gridPosition.x < width && gridPosition.z >= 0 && gridPosition.z < height;
     }
 }
 
