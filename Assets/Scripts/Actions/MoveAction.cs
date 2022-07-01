@@ -39,20 +39,7 @@ public class MoveAction : BaseAction
         transform.forward = Vector3.Lerp(transform.forward, moveDirection, rotateSpeed * Time.deltaTime); //rotate player to move direction
     }
 
-    public void Move(GridPosition targetGridPosition, Action onMoveComplete)
-    {
-        onActionComplete = onMoveComplete;
-        this.targetPosition =  LevelGrid.Instance.GetWorldPosition(targetGridPosition);
-        isActive = true;
-    }
-
-    public bool IsValidActionGridPosition(GridPosition targetGridPosition)
-    {
-        List<GridPosition> validGridPositions = GetValidActionGridPositionList();
-        return validGridPositions.Contains(targetGridPosition);
-    }
-
-    public List<GridPosition> GetValidActionGridPositionList()
+    public override List<GridPosition> GetValidActionGridPositionList()
     {
         List<GridPosition> validPositions = new List<GridPosition>();
         GridPosition unitGridPosition = unit.GetUnitGridPosition();
@@ -83,5 +70,17 @@ public class MoveAction : BaseAction
             }
         }
         return validPositions;
+    }
+
+    public override string GetActionName()
+    {
+        return "Move";
+    }
+
+    public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
+    {
+        this.onActionComplete = onActionComplete;
+        this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+        isActive = true;
     }
 }

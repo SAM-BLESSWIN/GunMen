@@ -39,7 +39,7 @@ public class GridSystemVisual : MonoBehaviour
 
     private void Update()
     {
-        UpdateGridVisual();
+        UpdateGridVisual(); //BAD CODE// /* try using observer pattern*/
     }
 
     public void HideAllGridPositions()
@@ -64,6 +64,6 @@ public class GridSystemVisual : MonoBehaviour
     public void UpdateGridVisual()
     {
         HideAllGridPositions();
-        ShowValidGridPositions(UnitActionSystem.Instance.GetSelectedUnit().GetMoveAction().GetValidActionGridPositionList());
+        ShowValidGridPositions(UnitActionSystem.Instance.GetSelectedAction().GetValidActionGridPositionList());
     }
 }

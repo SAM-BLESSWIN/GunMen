@@ -15,4 +15,16 @@ public abstract class BaseAction : MonoBehaviour
     {
         unit = GetComponent<Unit>();
     }
+
+    /*Abstract Method : makes it compulsory to implement in the derived class*/
+    public abstract string GetActionName();
+    public abstract void TakeAction(GridPosition gridPosition,Action onActionComplete);
+
+    public virtual bool IsValidActionGridPosition(GridPosition targetGridPosition)
+    {
+        List<GridPosition> validGridPositions = GetValidActionGridPositionList();
+        return validGridPositions.Contains(targetGridPosition);
+    }
+
+    public abstract List<GridPosition> GetValidActionGridPositionList();
 }
