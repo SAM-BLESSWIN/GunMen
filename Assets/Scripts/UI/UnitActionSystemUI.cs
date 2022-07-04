@@ -9,7 +9,8 @@ public class UnitActionSystemUI : MonoBehaviour
 {
     [SerializeField] private GameObject unitActionButtonPrefab;
     [SerializeField] private Transform unitActionButtonContainer;
-
+    [SerializeField] private TMP_Text actionPointsText;
+  
     private List<ActionButtonUI> actionButtonUIList;
 
     private void Awake()
@@ -23,13 +24,36 @@ public class UnitActionSystemUI : MonoBehaviour
 
         UnitActionSystem.Instance.OnActionSelectedChanged += UnitActionSystem_OnActionSelectedChanged;
 
+        UnitActionSystem.Instance.OnActionTriggered += UnitActionSystem_OnActionTriggered;
+
+        TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
+
+        Unit.OnAnyActionPointsChanged += Unit_OnAnyActionPointsChanged;
+
         CreateUnitActionButtons();
         UpdateSelectedVisual();
+        UpdateActionPoints();
+    }
+
+    private void Unit_OnAnyActionPointsChanged(object sender, EventArgs e)
+    {
+        UpdateActionPoints();
+    }
+
+    private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
+    {
+        UpdateActionPoints();
+    }
+
+    private void UnitActionSystem_OnActionTriggered(object sender, EventArgs e)
+    {
+        UpdateActionPoints();
     }
 
     private void UnitActionSystem_OnSelectedUnitChanged(object sender, EventArgs e)
     {
         CreateUnitActionButtons();
+        UpdateActionPoints();  
     }
 
     private void CreateUnitActionButtons()
@@ -61,5 +85,11 @@ public class UnitActionSystemUI : MonoBehaviour
         {
             actionButton.UpdateSelectedVisual();
         }
+    }
+
+    private void UpdateActionPoints()
+    {
+        Unit selectedUnit = UnitActionSystem.Instance.GetSelectedUnit();
+        actionPointsText.text = "ActionPoints: "+selectedUnit.ActionPoints.ToString();
     }
 }

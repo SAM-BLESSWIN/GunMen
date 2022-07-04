@@ -50,4 +50,5 @@ public class SpinAction : BaseAction
         GridPosition unitGridPosition = unit.GetUnitGridPosition();
         return new List<GridPosition> { unitGridPosition};
     }
+
 }

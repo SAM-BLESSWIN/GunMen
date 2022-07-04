@@ -11,11 +11,12 @@ public class UnitActionSystem : MonoBehaviour
     public event EventHandler OnUnitSelectedChanged;  //Inbuilt Delegate
     public event EventHandler OnActionSelectedChanged;
     public event EventHandler<bool> OnBusyChanged;
+    public event EventHandler OnActionTriggered;
 
     [SerializeField] private Unit selectedUnit;
     [SerializeField] private LayerMask unitsLayerMask;
 
-    private BaseAction selectedAction;
+    [SerializeField] private BaseAction selectedAction;
     private bool isBusy;
     
     private void Awake()
@@ -33,6 +34,7 @@ public class UnitActionSystem : MonoBehaviour
     {
         SetSelectedAction(selectedUnit.GetMoveAction());
     }
+
 
     private void Update()
     {
@@ -55,8 +57,12 @@ public class UnitActionSystem : MonoBehaviour
 
         if (selectedAction.IsValidActionGridPosition(mouseGridPosition))
         {
-            SetBusy();
-            selectedAction.TakeAction(mouseGridPosition, ClearBusy);
+            if(selectedUnit.TryTakingAction(selectedAction))
+            {
+                SetBusy();
+                OnActionTriggered?.Invoke(this, EventArgs.Empty);
+                selectedAction.TakeAction(mouseGridPosition, ClearBusy);
+            }
         }
     }
 
@@ -92,10 +98,11 @@ public class UnitActionSystem : MonoBehaviour
     private void SetSelectedUnit(Unit unit)
     {
         selectedUnit = unit;
-        SetSelectedAction(selectedUnit.GetMoveAction());
 
         //OBSERVER PATTERN
         OnUnitSelectedChanged?.Invoke(this, EventArgs.Empty); //publisher
+
+        SetSelectedAction(selectedUnit.GetMoveAction());
     }
 
     public void SetSelectedAction(BaseAction action)
@@ -108,5 +115,4 @@ public class UnitActionSystem : MonoBehaviour
 
     public Unit GetSelectedUnit() => selectedUnit;
     public BaseAction GetSelectedAction() => selectedAction;
-
 }
